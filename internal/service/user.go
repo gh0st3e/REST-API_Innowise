@@ -11,8 +11,10 @@ import (
 	"time"
 )
 
-func GetUser(uuid string) ([]byte, error) {
-	user, err := repository.GetUser(uuid)
+func (s *Store) GetUser(uuid string) ([]byte, error) {
+	user, err := s.rp.GetUser(uuid)
+	//user, err := repository.Repo.GetUser(r,uuid)
+	//user, err := repository.GetUser(uuid)
 	if err != nil {
 		fmt.Println(err)
 		return nil, err
@@ -53,28 +55,29 @@ func DeleteUser(uuid string) error {
 }
 
 func UpdateUser(uuid string, closer io.ReadCloser) error {
-	oldUser, err := repository.GetUser(uuid)
-	if err != nil {
-		return err
-	}
-
-	var newUser entity.User
-	_ = json.NewDecoder(closer).Decode(&newUser)
-
-	newUser.ID = oldUser.ID
-	newUser.Created = oldUser.Created
-
-	err = checks.Validation(newUser)
-	if err != nil {
-		return err
-	}
-
-	fmt.Println(newUser)
-	err = repository.UpdateUser(uuid, newUser)
-	if err != nil {
-		return err
-	}
-
+	//oldUser, err := repository.Repo{}.GetUser(uuid)
+	////oldUser, err := repository.GetUser(uuid)
+	//if err != nil {
+	//	return err
+	//}
+	//
+	//var newUser entity.User
+	//_ = json.NewDecoder(closer).Decode(&newUser)
+	//
+	//newUser.ID = oldUser.ID
+	//newUser.Created = oldUser.Created
+	//
+	//err = checks.Validation(newUser)
+	//if err != nil {
+	//	return err
+	//}
+	//
+	//fmt.Println(newUser)
+	//err = repository.UpdateUser(uuid, newUser)
+	//if err != nil {
+	//	return err
+	//}
+	//
 	return nil
 }
 

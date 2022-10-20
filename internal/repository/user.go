@@ -14,11 +14,9 @@ var queryUser = map[string]string{
 	"GetUserList": "SELECT * FROM users",
 }
 
-func GetUser(uuid string) (*entity.User, error) {
-
-	db := database.Connect()
+func (r Repo) GetUser(uuid string) (*entity.User, error) {
 	query := fmt.Sprintf(queryUser["GetUser"], uuid)
-	result, err := db.Query(query)
+	result, err := r.db.Query(query)
 	if err != nil {
 		panic(err)
 	}

@@ -1,7 +1,9 @@
 package server
 
 import (
+	"InnowisePreTraineeTask/internal/repository"
 	"InnowisePreTraineeTask/internal/service"
+	"database/sql"
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"
@@ -11,6 +13,18 @@ func ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader((http.StatusOK))
 	w.Write([]byte(`{"message": "Main page"}`))
+}
+
+type IServer interface {
+	GetUser(w http.ResponseWriter, r *http.Request)
+}
+
+type Server struct {
+	sv service.IService
+}
+
+func New(repo service.IService) IServer {
+	return &Server{repo}
 }
 
 // Создать юзера
@@ -28,7 +42,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 }
 
 // Получить юзера по айди
-func GetUser(w http.ResponseWriter, r *http.Request) {
+func (s *Server) GetUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader((http.StatusOK))
 
@@ -38,7 +52,7 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	user, _ := service.GetUser(uuid)
+	user, _ := s.sv.GetUser(uuid)
 
 	w.Write(user)
 
@@ -90,12 +104,16 @@ func GetUserList(w http.ResponseWriter, r *http.Request) {
 	w.Write(users)
 }
 
-func InitServer() {
+func InitServer(db *sql.DB) {
 	r := mux.NewRouter()
+
+	rep := repository.NewRepo(db)
+	store := service.New(rep)
+	serv := New(store)
 
 	r.HandleFunc("/", ServeHTTP)
 	r.HandleFunc("/users", CreateUser).Methods("POST")
-	r.HandleFunc("/users/{id}", GetUser).Methods("GET")
+	r.HandleFunc("/users/{id}", serv.GetUser).Methods("GET")
 	r.HandleFunc("/users/{id}", EditUser).Methods("PUT")
 	r.HandleFunc("/users/{id}", DeleteUser).Methods("DELETE")
 	r.HandleFunc("/users", GetUserList).Methods("GET")
