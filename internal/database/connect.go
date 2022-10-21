@@ -18,5 +18,4 @@ func Connect() *sql.DB {
 	}
 
 	return db
-
 }

@@ -1,7 +1,6 @@
 package repository
 
 import (
-	"InnowisePreTraineeTask/internal/database"
 	"InnowisePreTraineeTask/internal/entity"
 	"fmt"
 )
@@ -14,7 +13,7 @@ var queryUser = map[string]string{
 	"GetUserList": "SELECT * FROM users",
 }
 
-func (r Repo) GetUser(uuid string) (*entity.User, error) {
+func (r UserRepository) GetUser(uuid string) (*entity.User, error) {
 	query := fmt.Sprintf(queryUser["GetUser"], uuid)
 	result, err := r.db.Query(query)
 	if err != nil {
@@ -32,11 +31,10 @@ func (r Repo) GetUser(uuid string) (*entity.User, error) {
 	return &user, nil
 }
 
-func CreateUser(user entity.User) error {
-	db := database.Connect()
+func (r UserRepository) CreateUser(user entity.User) error {
 	//TODO переделать запрос
 	query := fmt.Sprintf(queryUser["CreateUser"], user.ID, user.Firstname, user.Lastname, user.Email, user.Age, user.Created.Format("2006.01.02 15:04:05"))
-	result, err := db.Exec(query)
+	result, err := r.db.Exec(query)
 	if err != nil {
 		_ = result
 		panic(err)
@@ -45,10 +43,9 @@ func CreateUser(user entity.User) error {
 	return nil
 }
 
-func DeleteUser(uuid string) error {
-	db := database.Connect()
+func (r UserRepository) DeleteUser(uuid string) error {
 	query := fmt.Sprintf(queryUser["DeleteUser"], uuid)
-	result, err := db.Exec(query)
+	result, err := r.db.Exec(query)
 	if err != nil {
 		_ = result
 		panic(err)
@@ -56,10 +53,9 @@ func DeleteUser(uuid string) error {
 	return nil
 }
 
-func UpdateUser(uuid string, user entity.User) error {
-	db := database.Connect()
+func (r UserRepository) UpdateUser(uuid string, user entity.User) error {
 	query := fmt.Sprintf(queryUser["UpdateUser"], user.Firstname, user.Lastname, user.Email, user.Age, uuid)
-	result, err := db.Exec(query)
+	result, err := r.db.Exec(query)
 	if err != nil {
 		_ = result
 		return err
@@ -67,10 +63,9 @@ func UpdateUser(uuid string, user entity.User) error {
 	return nil
 }
 
-func GetUserList() ([]entity.User, error) {
-	db := database.Connect()
+func (r UserRepository) GetUserList() ([]entity.User, error) {
 	query := fmt.Sprintf(queryUser["GetUserList"])
-	result, err := db.Query(query)
+	result, err := r.db.Query(query)
 	if err != nil {
 		panic(err)
 	}
