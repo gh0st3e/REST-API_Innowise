@@ -17,7 +17,7 @@ func (r UserRepository) GetUser(uuid string) (*entity.User, error) {
 	query := fmt.Sprintf(queryUser["GetUser"], uuid)
 	result, err := r.db.Query(query)
 	if err != nil {
-		panic(err)
+		return &entity.User{}, err
 	}
 	defer result.Close()
 
@@ -25,39 +25,34 @@ func (r UserRepository) GetUser(uuid string) (*entity.User, error) {
 	user := entity.User{}
 	err = result.Scan(&user.ID, &user.Firstname, &user.Lastname, &user.Email, &user.Age, &user.Created)
 	if err != nil {
-		fmt.Println(err)
-		return nil, err
+		return &entity.User{}, err
 	}
 	return &user, nil
 }
 
 func (r UserRepository) CreateUser(user entity.User) error {
-	//TODO переделать запрос
+	// TODO Мб как-нибудь позже юзну сквирелл
 	query := fmt.Sprintf(queryUser["CreateUser"], user.ID, user.Firstname, user.Lastname, user.Email, user.Age, user.Created.Format("2006.01.02 15:04:05"))
-	result, err := r.db.Exec(query)
+	_, err := r.db.Exec(query)
 	if err != nil {
-		_ = result
-		panic(err)
-		//return err
+		return err
 	}
 	return nil
 }
 
 func (r UserRepository) DeleteUser(uuid string) error {
 	query := fmt.Sprintf(queryUser["DeleteUser"], uuid)
-	result, err := r.db.Exec(query)
+	_, err := r.db.Exec(query)
 	if err != nil {
-		_ = result
-		panic(err)
+		return err
 	}
 	return nil
 }
 
 func (r UserRepository) UpdateUser(uuid string, user entity.User) error {
 	query := fmt.Sprintf(queryUser["UpdateUser"], user.Firstname, user.Lastname, user.Email, user.Age, uuid)
-	result, err := r.db.Exec(query)
+	_, err := r.db.Exec(query)
 	if err != nil {
-		_ = result
 		return err
 	}
 	return nil
@@ -67,7 +62,7 @@ func (r UserRepository) GetUserList() ([]entity.User, error) {
 	query := fmt.Sprintf(queryUser["GetUserList"])
 	result, err := r.db.Query(query)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 	defer result.Close()
 
@@ -77,7 +72,6 @@ func (r UserRepository) GetUserList() ([]entity.User, error) {
 		user := entity.User{}
 		err = result.Scan(&user.ID, &user.Firstname, &user.Lastname, &user.Email, &user.Age, &user.Created)
 		if err != nil {
-			fmt.Println(err)
 			return nil, err
 		}
 		users = append(users, user)

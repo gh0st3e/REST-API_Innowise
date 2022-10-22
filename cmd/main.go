@@ -6,15 +6,16 @@ import (
 	"InnowisePreTraineeTask/internal/server"
 	"InnowisePreTraineeTask/internal/service"
 	"github.com/gorilla/mux"
-	"log"
+	"github.com/sirupsen/logrus"
 	"net/http"
 )
 
 func main() {
+	log := logrus.New()
 	db := database.Connect()
 
 	userRepository := repository.NewUserRepository(db)
-	userService := service.NewUserService(userRepository)
+	userService := service.NewUserService(log, userRepository)
 	userServer := server.NewUserServer(userService)
 
 	r := mux.NewRouter()

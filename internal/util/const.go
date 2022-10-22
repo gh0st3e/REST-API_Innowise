@@ -7,3 +7,9 @@ const (
 	DelUser     = "/users/{id}"
 	GetUserList = "/users"
 )
+const (
+	UserDB     = "postgres"
+	PasswordDB = "8403"
+	NameDB     = "InnowiseTask"
+	SslMode    = "disable"
+)

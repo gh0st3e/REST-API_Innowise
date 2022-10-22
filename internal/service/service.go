@@ -2,6 +2,7 @@ package service
 
 import (
 	"InnowisePreTraineeTask/internal/entity"
+	"github.com/sirupsen/logrus"
 )
 
 type UserRepository interface {
@@ -13,9 +14,10 @@ type UserRepository interface {
 }
 
 type UserService struct {
+	log            *logrus.Logger
 	userRepository UserRepository
 }
 
-func NewUserService(ur UserRepository) *UserService {
-	return &UserService{ur}
+func NewUserService(log *logrus.Logger, ur UserRepository) *UserService {
+	return &UserService{log, ur}
 }
