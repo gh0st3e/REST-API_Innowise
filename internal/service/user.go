@@ -9,7 +9,7 @@ import (
 )
 
 func (s UserService) GetUser(uuid string) (*entity.User, error) {
-	s.log.Info("Start Get User")
+	s.log.Info("Start Get Userr")
 	user, err := s.userRepository.GetUser(uuid)
 	if err != nil {
 		s.log.Info(err)
