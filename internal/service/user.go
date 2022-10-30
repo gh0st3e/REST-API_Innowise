@@ -12,6 +12,7 @@ func (s UserService) GetUser(uuid string) (*entity.User, error) {
 	s.log.Info("Start Get User")
 	user, err := s.userRepository.GetUser(uuid)
 	if err != nil {
+		s.log.Info(err)
 		return &entity.User{}, errors.Wrap(err, "service.user.GetUser couldn't get user")
 	}
 
@@ -21,16 +22,21 @@ func (s UserService) GetUser(uuid string) (*entity.User, error) {
 
 func (s UserService) CreateUser(user entity.User) error {
 	s.log.Info("Start Create User")
-	user.ID, _ = uuid2.NewUUID()
+
+	if user.ID == uuid2.Nil {
+		user.ID, _ = uuid2.NewUUID()
+	}
 	user.Created = time.Now().UTC()
 
 	err := checks.Validation(user)
 	if err != nil {
+		s.log.Info(err)
 		return errors.Wrap(err, "service.user.CreateUser couldn't validate user")
 	}
 
 	err = s.userRepository.CreateUser(user)
 	if err != nil {
+		s.log.Info(err)
 		return errors.Wrap(err, "service.user.CreateUser couldn't create user")
 	}
 
@@ -43,6 +49,7 @@ func (s UserService) DeleteUser(uuid string) error {
 	s.log.Info("Start Delete User")
 	err := s.userRepository.DeleteUser(uuid)
 	if err != nil {
+		s.log.Info(err)
 		return errors.Wrap(err, "service.user.DeleteUser couldn't delete user")
 	}
 
@@ -54,6 +61,7 @@ func (s UserService) UpdateUser(uuid string, newUser entity.User) error {
 	s.log.Info("Start Update User")
 	oldUser, err := s.userRepository.GetUser(uuid)
 	if err != nil {
+		s.log.Info(err)
 		return errors.Wrap(err, "service.user.GetUser couldn't get user")
 	}
 	s.log.Infof("Old User: %s", oldUser)
@@ -63,12 +71,14 @@ func (s UserService) UpdateUser(uuid string, newUser entity.User) error {
 
 	err = checks.Validation(newUser)
 	if err != nil {
+		s.log.Info(err)
 		return errors.Wrap(err, "service.user.CreateUser couldn't validate user")
 	}
 
 	s.log.Infof("New User: %s", newUser)
 	err = s.userRepository.UpdateUser(uuid, newUser)
 	if err != nil {
+		s.log.Info(err)
 		return errors.Wrap(err, "service.user.UpdateUser couldn't update user")
 	}
 
@@ -80,6 +90,7 @@ func (s UserService) GetUserList() ([]entity.User, error) {
 	s.log.Info("Start Get User List")
 	users, err := s.userRepository.GetUserList()
 	if err != nil {
+		s.log.Info(err)
 		return nil, errors.Wrap(err, "service.user.GetUserList couldn't get user list")
 	}
 

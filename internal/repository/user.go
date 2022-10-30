@@ -33,6 +33,7 @@ func (r UserRepository) GetUser(uuid string) (*entity.User, error) {
 func (r UserRepository) CreateUser(user entity.User) error {
 	// TODO Мб как-нибудь позже юзну сквирелл
 	query := fmt.Sprintf(queryUser["CreateUser"], user.ID, user.Firstname, user.Lastname, user.Email, user.Age, user.Created.Format("2006.01.02 15:04:05"))
+
 	_, err := r.db.Exec(query)
 	if err != nil {
 		return err

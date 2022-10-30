@@ -1,9 +1,9 @@
 package main
 
 import (
+	"InnowisePreTraineeTask/internal/controller"
 	"InnowisePreTraineeTask/internal/database"
 	"InnowisePreTraineeTask/internal/repository"
-	"InnowisePreTraineeTask/internal/server"
 	"InnowisePreTraineeTask/internal/service"
 	"github.com/gorilla/mux"
 	"github.com/sirupsen/logrus"
@@ -16,7 +16,7 @@ func main() {
 
 	userRepository := repository.NewUserRepository(db)
 	userService := service.NewUserService(log, userRepository)
-	userServer := server.NewUserServer(userService)
+	userServer := controller.NewUserServer(log, userService)
 
 	r := mux.NewRouter()
 

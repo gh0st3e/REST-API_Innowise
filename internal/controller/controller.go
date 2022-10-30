@@ -1,7 +1,8 @@
-package server
+package controller
 
 import (
 	"InnowisePreTraineeTask/internal/entity"
+	"github.com/sirupsen/logrus"
 )
 
 type UserService interface {
@@ -12,10 +13,11 @@ type UserService interface {
 	GetUserList() ([]entity.User, error)
 }
 
-type UserServer struct {
+type UserController struct {
+	log         *logrus.Logger
 	userService UserService
 }
 
-func NewUserServer(us UserService) *UserServer {
-	return &UserServer{us}
+func NewUserServer(log *logrus.Logger, us UserService) *UserController {
+	return &UserController{log, us}
 }
