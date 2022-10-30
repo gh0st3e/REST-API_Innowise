@@ -30,22 +30,3 @@ func validateEmail(value string) bool {
 	}
 	return true
 }
-
-//func CheckUserField(oldUser, newUser entity.User) entity.User {
-//	newUser.ID = oldUser.ID
-//	if newUser.Firstname == "" {
-//		newUser.Firstname = oldUser.Firstname
-//	}
-//	if newUser.Lastname == "" {
-//		newUser.Lastname = oldUser.Lastname
-//	}
-//	if newUser.Email == "" {
-//		newUser.Email = oldUser.Email
-//	}
-//	if newUser.Age == 0 {
-//		newUser.Age = oldUser.Age
-//	}
-//	newUser.Created = oldUser.Created
-//
-//	return newUser
-//}

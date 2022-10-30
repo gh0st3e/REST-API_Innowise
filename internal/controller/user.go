@@ -20,7 +20,11 @@ func (us UserController) CreateUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	w.WriteHeader((http.StatusOK))
-	w.Write([]byte(`{"message": "The user has been created"}`))
+	_, err = w.Write([]byte(`{"message": "The user has been created"}`))
+	if err != nil {
+		us.log.Printf("controller.user.CreateUser, %s", err)
+		return
+	}
 }
 
 func (us UserController) GetUser(w http.ResponseWriter, r *http.Request) {
@@ -46,7 +50,11 @@ func (us UserController) GetUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	w.WriteHeader((http.StatusOK))
-	w.Write(byteUser)
+	_, err = w.Write(byteUser)
+	if err != nil {
+		us.log.Printf("controller.user.GetUser, %s", err)
+		return
+	}
 }
 
 func (us UserController) UpdateUser(w http.ResponseWriter, r *http.Request) {
@@ -69,7 +77,11 @@ func (us UserController) UpdateUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	w.WriteHeader((http.StatusOK))
-	w.Write([]byte(`{"message": "The user has been changed"}`))
+	_, err = w.Write([]byte(`{"message": "The user has been changed"}`))
+	if err != nil {
+		us.log.Printf("controller.user.UpdateUser, %s", err)
+		return
+	}
 }
 
 func (us UserController) DeleteUser(w http.ResponseWriter, r *http.Request) {
@@ -89,7 +101,11 @@ func (us UserController) DeleteUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	w.WriteHeader((http.StatusOK))
-	w.Write([]byte(`{"message": "The user has been deleted"}`))
+	_, err = w.Write([]byte(`{"message": "The user has been deleted"}`))
+	if err != nil {
+		us.log.Printf("controller.user.DeleteUser, %s", err)
+		return
+	}
 }
 
 func (us UserController) GetUserList(w http.ResponseWriter, r *http.Request) {
@@ -109,7 +125,11 @@ func (us UserController) GetUserList(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	w.WriteHeader((http.StatusOK))
-	w.Write(byteUsers)
+	_, err = w.Write(byteUsers)
+	if err != nil {
+		us.log.Printf("controller.user.GetUserList, %s", err)
+		return
+	}
 }
 
 func (c *UserController) Mount(r *mux.Router) {
