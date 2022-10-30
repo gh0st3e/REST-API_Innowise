@@ -97,7 +97,7 @@ func (us UserController) GetUserList(w http.ResponseWriter, r *http.Request) {
 
 	users, err := us.userService.GetUserList()
 	if err != nil {
-		us.log.Println("controller.user.GetUserList couldn't get user list, %s", err)
+		us.log.Printf("controller.user.GetUserList couldn't get user list, %s", err)
 		w.WriteHeader((http.StatusNotFound))
 		return
 	}
