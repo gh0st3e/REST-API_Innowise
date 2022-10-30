@@ -15,7 +15,7 @@ func (us UserController) CreateUser(w http.ResponseWriter, r *http.Request) {
 
 	err := us.userService.CreateUser(user)
 	if err != nil {
-		us.log.Println("controller.user.CreateUser couldn't create user, %s", err)
+		us.log.Printf("controller.user.CreateUser couldn't create user, %s", err)
 		w.WriteHeader((http.StatusNotFound))
 		return
 	}
@@ -34,14 +34,14 @@ func (us UserController) GetUser(w http.ResponseWriter, r *http.Request) {
 	}
 	user, err := us.userService.GetUser(uuid)
 	if err != nil {
-		us.log.Println("controller.user.GetUser couldn't get user, %s", err)
+		us.log.Printf("controller.user.GetUser couldn't get user, %s", err)
 		w.WriteHeader((http.StatusNotFound))
 		return
 	}
 
 	byteUser, err := json.Marshal(user)
 	if err != nil {
-		us.log.Println("controller.user.GetUser couldn't parse User")
+		us.log.Printf("controller.user.GetUser couldn't parse User")
 		w.WriteHeader((http.StatusNotFound))
 		return
 	}
@@ -64,7 +64,7 @@ func (us UserController) UpdateUser(w http.ResponseWriter, r *http.Request) {
 
 	err := us.userService.UpdateUser(uuid, user)
 	if err != nil {
-		us.log.Println("controller.user.UpdateUser couldn't update user, %s", err)
+		us.log.Printf("controller.user.UpdateUser couldn't update user, %s", err)
 		w.WriteHeader((http.StatusNotFound))
 		return
 	}
@@ -84,7 +84,7 @@ func (us UserController) DeleteUser(w http.ResponseWriter, r *http.Request) {
 
 	err := us.userService.DeleteUser(uuid)
 	if err != nil {
-		us.log.Println("controller.user.DeleteUser couldn't delete user, %s", err)
+		us.log.Printf("controller.user.DeleteUser couldn't delete user, %s", err)
 		w.WriteHeader((http.StatusNotFound))
 		return
 	}

@@ -64,7 +64,7 @@ func (s UserService) UpdateUser(uuid string, newUser entity.User) error {
 		s.log.Info(err)
 		return errors.Wrap(err, "service.user.GetUser couldn't get user")
 	}
-	s.log.Infof("Old User: %s", oldUser)
+	s.log.Infof("Old User: %v", oldUser)
 
 	newUser.ID = oldUser.ID
 	newUser.Created = oldUser.Created
@@ -75,7 +75,7 @@ func (s UserService) UpdateUser(uuid string, newUser entity.User) error {
 		return errors.Wrap(err, "service.user.CreateUser couldn't validate user")
 	}
 
-	s.log.Infof("New User: %s", newUser)
+	s.log.Infof("New User: %v", newUser)
 	err = s.userRepository.UpdateUser(uuid, newUser)
 	if err != nil {
 		s.log.Info(err)
