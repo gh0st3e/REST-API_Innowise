@@ -1,4 +1,4 @@
-name: Go
+name: Coverage
 
 on:
   push:
@@ -21,4 +21,5 @@ jobs:
           go-version: 1.19
 
       - name: Test
-        run: go test -race -cover -coverpkg ./...
+        :
+        run: go test -coverpkg=./... ./...
