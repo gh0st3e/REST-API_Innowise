@@ -3,6 +3,7 @@ package controller
 import (
 	"InnowisePreTraineeTask/internal/entity"
 	"encoding/json"
+	"fmt"
 	"github.com/gorilla/mux"
 	"net/http"
 )
@@ -17,6 +18,7 @@ func (us UserController) CreateUser(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		us.log.Printf("controller.user.CreateUser couldn't create user, %s", err)
 		w.WriteHeader((http.StatusNotFound))
+		w.Write([]byte(fmt.Sprintf(`{"message": "%s"}`, err)))
 		return
 	}
 	w.WriteHeader((http.StatusOK))
@@ -40,6 +42,7 @@ func (us UserController) GetUser(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		us.log.Printf("controller.user.GetUser couldn't get user, %s", err)
 		w.WriteHeader((http.StatusNotFound))
+
 		return
 	}
 
@@ -74,6 +77,7 @@ func (us UserController) UpdateUser(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		us.log.Printf("controller.user.UpdateUser couldn't update user, %s", err)
 		w.WriteHeader((http.StatusNotFound))
+		w.Write([]byte(fmt.Sprintf(`{"message": "%s"}`, err)))
 		return
 	}
 	w.WriteHeader((http.StatusOK))

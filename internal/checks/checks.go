@@ -8,16 +8,16 @@ import (
 
 func Validation(user entity.User) error {
 	if len(user.Firstname) < 2 || len(user.Firstname) > 10 {
-		return errors.New("и много ты знаешь людей с именем длиной в 1 букву или в 11")
+		return errors.New("Firstname should be more then 1 symbol but less then 11")
 	}
 	if len(user.Lastname) < 2 || len(user.Lastname) > 10 {
-		return errors.New("и много ты знаешь людей с фамилией длиной в 1 букву или в 11")
+		return errors.New("Lastname should be more then 1 symbol but less then 11")
 	}
 	if !validateEmail(user.Email) {
-		return errors.New("брат, почта стремная, переделай")
+		return errors.New("your email incorrect")
 	}
 	if user.Age < 1 {
-		return errors.New("денис, 0 лет, пошлый. А если серьзно, вводи настоящий возраст, деанона не будет")
+		return errors.New("your should be older tneh 0 year")
 	}
 	return nil
 }
