@@ -30,7 +30,7 @@ func TestValidation(t *testing.T) {
 				Email:     "viktor.korneplod.2020@mail.ru",
 				Age:       100,
 			},
-			expected: errors.New("и много ты знаешь людей с именем длиной в 1 букву или в 11"),
+			expected: errors.New("Firstname should be more then 1 symbol but less then 11"),
 		},
 		{
 			name: "Validation Test Three",
@@ -40,7 +40,7 @@ func TestValidation(t *testing.T) {
 				Email:     "viktor.korneplod.2020@mail.ru",
 				Age:       100,
 			},
-			expected: errors.New("и много ты знаешь людей с фамилией длиной в 1 букву или в 11"),
+			expected: errors.New("Lastname should be more then 1 symbol but less then 11"),
 		},
 		{
 			name: "Validation Test Four",
@@ -50,7 +50,7 @@ func TestValidation(t *testing.T) {
 				Email:     "viktor.korneplod.2020mail.ru",
 				Age:       100,
 			},
-			expected: errors.New("брат, почта стремная, переделай"),
+			expected: errors.New("your email incorrect"),
 		},
 		{
 			name: "Validation Test Five",
@@ -60,7 +60,7 @@ func TestValidation(t *testing.T) {
 				Email:     "badpochta",
 				Age:       100,
 			},
-			expected: errors.New("брат, почта стремная, переделай"),
+			expected: errors.New("your email incorrect"),
 		},
 		{
 			name: "Validation Test Six",
@@ -70,7 +70,7 @@ func TestValidation(t *testing.T) {
 				Email:     "",
 				Age:       100,
 			},
-			expected: errors.New("брат, почта стремная, переделай"),
+			expected: errors.New("your email incorrect"),
 		},
 		{
 			name: "Validation Test Seven",
@@ -80,7 +80,7 @@ func TestValidation(t *testing.T) {
 				Email:     "viktor.korneplod.2020@mail.ru",
 				Age:       0,
 			},
-			expected: errors.New("денис, 0 лет, пошлый. А если серьзно, вводи настоящий возраст, деанона не будет"),
+			expected: errors.New("your should be older tneh 0 year"),
 		},
 	}
 	for _, testCase := range testTable {
