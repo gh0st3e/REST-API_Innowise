@@ -23,10 +23,6 @@ func Validation(user entity.User) error {
 }
 
 func validateEmail(value string) bool {
-
 	var mailRe = regexp.MustCompile(`\A[\w+\-.]+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z`)
-	if !mailRe.MatchString(value) {
-		return false
-	}
-	return true
+	return mailRe.MatchString(value)
 }
