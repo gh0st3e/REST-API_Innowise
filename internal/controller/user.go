@@ -16,7 +16,7 @@ func (us UserController) CreateUser(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		us.log.Errorf("controller.user.CreateUser.Decode couldn't decode user, %s", err)
 		w.WriteHeader((http.StatusInternalServerError))
-		w.Write([]byte(fmt.Sprintf(`{"error": "%s"}`, err)))
+		_, _ = w.Write([]byte(fmt.Sprintf(`{"error": "%s"}`, err)))
 		return
 	}
 
@@ -24,7 +24,7 @@ func (us UserController) CreateUser(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		us.log.Errorf("controller.user.CreateUser couldn't create user, %s", err)
 		w.WriteHeader((http.StatusInternalServerError))
-		w.Write([]byte(fmt.Sprintf(`{"error": "%s"}`, err)))
+		_, _ = w.Write([]byte(fmt.Sprintf(`{"error": "%s"}`, err)))
 		return
 	}
 	w.WriteHeader((http.StatusOK))
@@ -81,7 +81,7 @@ func (us UserController) UpdateUser(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		us.log.Errorf("controller.user.UpdateUser.Decode couldn't decode user, %s", err)
 		w.WriteHeader((http.StatusInternalServerError))
-		w.Write([]byte(fmt.Sprintf(`{"error": "%s"}`, err)))
+		_, _ = w.Write([]byte(fmt.Sprintf(`{"error": "%s"}`, err)))
 		return
 	}
 
@@ -89,7 +89,7 @@ func (us UserController) UpdateUser(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		us.log.Errorf("controller.user.UpdateUser couldn't update user, %s", err)
 		w.WriteHeader((http.StatusInternalServerError))
-		w.Write([]byte(fmt.Sprintf(`{"error": "%s"}`, err)))
+		_, _ = w.Write([]byte(fmt.Sprintf(`{"error": "%s"}`, err)))
 		return
 	}
 	w.WriteHeader((http.StatusOK))

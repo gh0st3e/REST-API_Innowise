@@ -20,11 +20,12 @@ func (r UserRepository) GetUser(uuid string) (*entity.User, error) {
 	if err != nil {
 		return &entity.User{}, err
 	}
-	defer result.Close()
+	//defer result.Close()
 
 	result.Next()
 	user := entity.User{}
 	err = result.Scan(&user.ID, &user.Firstname, &user.Lastname, &user.Email, &user.Age, &user.Created)
+
 	if err != nil {
 		return &entity.User{}, err
 	}

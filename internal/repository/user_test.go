@@ -36,7 +36,77 @@ func Connect() *service.UserService {
 	return userService
 }
 
-func TestCreateUserWithMock(t *testing.T) {
+//func TestCreateUserWithMock(t *testing.T) {
+//	db, mock, err := sqlmock.New()
+//	if err != nil {
+//		log.Printf("err: %s", err)
+//	}
+//	defer db.Close()
+//
+//	r := NewUserRepository(db)
+//	log := logrus.New()
+//	s := service.NewUserService(log, r)
+//
+//	type mockBehaviour func(user entity.User, id int)
+//
+//	testTable := []struct {
+//		name          string
+//		mockBehaviour mockBehaviour
+//		testUser      entity.User
+//		id            int
+//		expected      error
+//	}{
+//		{
+//			name: "Test Add One",
+//			testUser: entity.User{
+//				ID:        uuid.MustParse("18e90062-54b0-11ed-86a7-e8d8d1f76e0b"),
+//				Firstname: "Viktor",
+//				Lastname:  "Korneplod",
+//				Email:     "viktor.korneplod.2020@mail.ru",
+//				Age:       100,
+//				Created:   time.Now(),
+//			},
+//			id: 1,
+//			mockBehaviour: func(user entity.User, id int) {
+//				mock.ExpectExec(regexp.QuoteMeta(fmt.Sprintf("INSERT INTO users VALUES('%s','%s','%s','%s',%v,'%v')", user.ID, user.Firstname, user.Lastname, user.Email, user.Age, user.Created.Format(time.RFC3339)))).
+//					WillReturnResult(sqlmock.NewResult(1, 1))
+//			},
+//			expected: nil,
+//		},
+//		{
+//			name: "Test Add Two",
+//			testUser: entity.User{
+//				ID:        uuid.MustParse("18ea73dc-54b0-11ed-86a7-e8d8d1f76e0b"),
+//				Firstname: "Boris",
+//				Lastname:  "Johnson",
+//				Email:     "boris.johnson.2022@mail.ru",
+//				Age:       45,
+//				Created:   time.Now(),
+//			},
+//			id: 2,
+//			mockBehaviour: func(user entity.User, id int) {
+//				mock.ExpectExec(regexp.QuoteMeta(fmt.Sprintf("INSERT INTO users VALUES('%s','%s','%s','%s',%v,'%v')", user.ID, user.Firstname, user.Lastname, user.Email, user.Age, user.Created.Format(time.RFC3339)))).
+//					WillReturnResult(sqlmock.NewResult(1, 1))
+//			},
+//			expected: nil,
+//		},
+//	}
+//
+//	for _, testCase := range testTable {
+//		t.Run(testCase.name, func(t *testing.T) {
+//
+//			testCase.mockBehaviour(testCase.testUser, testCase.id)
+//
+//			actual := service.UserRepository.CreateUser(s, testCase.testUser)
+//
+//			if actual != testCase.expected {
+//				t.Errorf("not working. Expect %v, got %v", testCase.expected, actual)
+//			}
+//		})
+//	}
+//}
+
+func TestUpdateUserWithMock(t *testing.T) {
 	db, mock, err := sqlmock.New()
 	if err != nil {
 		log.Printf("err: %s", err)
@@ -44,8 +114,8 @@ func TestCreateUserWithMock(t *testing.T) {
 	defer db.Close()
 
 	r := NewUserRepository(db)
-	log := logrus.New()
-	s := service.NewUserService(log, r)
+	//log := logrus.New()
+	//s := service.NewUserService(log, r)
 
 	type mockBehaviour func(user entity.User, id int)
 
@@ -57,31 +127,47 @@ func TestCreateUserWithMock(t *testing.T) {
 		expected      error
 	}{
 		{
-			name: "Test Add One",
+			name: "Test Update One",
 			testUser: entity.User{
 				ID:        uuid.MustParse("18e90062-54b0-11ed-86a7-e8d8d1f76e0b"),
-				Firstname: "Viktor",
-				Lastname:  "Korneplod",
+				Firstname: "upd_Viktor",
+				Lastname:  "upd_Kornep",
 				Email:     "viktor.korneplod.2020@mail.ru",
 				Age:       100,
 				Created:   time.Now(),
 			},
 			id: 2,
 			mockBehaviour: func(user entity.User, id int) {
-				mock.ExpectExec(regexp.QuoteMeta(fmt.Sprintf("INSERT INTO users VALUES('%s','%s','%s','%s',%v,'%v')", user.ID, user.Firstname, user.Lastname, user.Email, user.Age, user.Created.Format(time.RFC3339)))).
+				mock.ExpectExec(regexp.QuoteMeta(fmt.Sprintf("UPDATE users SET firstname='%s',lastname='%s',email='%s',age=%v WHERE id='%s'", user.Firstname, user.Lastname, user.Email, user.Age, user.ID))).
 					WillReturnResult(sqlmock.NewResult(1, 1))
 			},
+			expected: nil,
+		},
+		{
+			name: "Test Update Two",
+			testUser: entity.User{
+				ID:        uuid.MustParse("18ea73dc-54b0-11ed-86a7-e8d8d1f76e0b"),
+				Firstname: "upd_Boris",
+				Lastname:  "upd_John",
+				Email:     "boris.johnson.2022@mail.ru",
+				Age:       45,
+				Created:   time.Now(),
+			},
+			id: 2,
+			mockBehaviour: func(user entity.User, id int) {
+				mock.ExpectExec(regexp.QuoteMeta(fmt.Sprintf("UPDATE users SET firstname='%s',lastname='%s',email='%s',age=%v WHERE id='%s'", user.Firstname, user.Lastname, user.Email, user.Age, user.ID))).
+					WillReturnResult(sqlmock.NewResult(1, 1))
+			},
+			expected: nil,
 		},
 	}
 
-	//"INSERT INTO users VALUES('18e90062-54b0-11ed-86a7-e8d8d1f76e0b','Viktor','Korneplod','viktor.korneplod.2020@mail.ru',100,'2022-11-03T03:34:02+03:00')"
-	//"INSERT INTO users VALUES('18e90062-54b0-11ed-86a7-e8d8d1f76e0b','Viktor','Korneplod','viktor.korneplod.2020@mail.ru',100,'2022-11-03T03:34:02+03:00')"
 	for _, testCase := range testTable {
 		t.Run(testCase.name, func(t *testing.T) {
 
 			testCase.mockBehaviour(testCase.testUser, testCase.id)
 
-			actual := service.UserRepository.CreateUser(s, testCase.testUser)
+			actual := UserRepository.UpdateUser(*r, testCase.testUser.ID.String(), testCase.testUser)
 
 			if actual != testCase.expected {
 				t.Errorf("not working. Expect %v, got %v", testCase.expected, actual)
