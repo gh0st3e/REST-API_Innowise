@@ -15,96 +15,75 @@ import (
 	"time"
 )
 
-func Connect() *service.UserService {
-	connStr := "user=postgres password=8403 dbname=InnowiseTaskTest sslmode=disable"
-
-	db, err := sql.Open("postgres", connStr)
-
+func TestCreateUserWithMock(t *testing.T) {
+	db, mock, err := sqlmock.New()
 	if err != nil {
-		log.Fatalf("Couldn't open database + %s", err)
+		log.Printf("err: %s", err)
 	}
+	defer db.Close()
 
-	err = db.Ping()
-	if err != nil {
-		log.Fatal("Couldn't ping database")
-	}
-
+	r := NewUserRepository(db)
 	log := logrus.New()
-	userRepository := NewUserRepository(db)
-	userService := service.NewUserService(log, userRepository)
+	s := service.NewUserService(log, r)
 
-	return userService
+	type mockBehaviour func(user entity.User, id int)
+
+	testTable := []struct {
+		name          string
+		mockBehaviour mockBehaviour
+		testUser      entity.User
+		id            int
+		expected      error
+	}{
+		{
+			name: "Test Add One",
+			testUser: entity.User{
+				ID:        uuid.MustParse("18e90062-54b0-11ed-86a7-e8d8d1f76e0b"),
+				Firstname: "Viktor",
+				Lastname:  "Korneplod",
+				Email:     "viktor.korneplod.2020@mail.ru",
+				Age:       100,
+				Created:   time.Now(),
+			},
+			id: 1,
+			mockBehaviour: func(user entity.User, id int) {
+				mock.ExpectExec(regexp.QuoteMeta(fmt.Sprintf("INSERT INTO users VALUES('%s','%s','%s','%s',%v,'%v')", user.ID, user.Firstname, user.Lastname, user.Email, user.Age, user.Created.Format(time.RFC3339)))).
+					WillReturnResult(sqlmock.NewResult(1, 1))
+			},
+			expected: nil,
+		},
+		{
+			name: "Test Add Two",
+			testUser: entity.User{
+				ID:        uuid.MustParse("18ea73dc-54b0-11ed-86a7-e8d8d1f76e0b"),
+				Firstname: "Boris",
+				Lastname:  "Johnson",
+				Email:     "boris.johnson.2022@mail.ru",
+				Age:       45,
+				Created:   time.Now(),
+			},
+			id: 2,
+			mockBehaviour: func(user entity.User, id int) {
+				mock.ExpectExec(regexp.QuoteMeta(fmt.Sprintf("INSERT INTO users VALUES('%s','%s','%s','%s',%v,'%v')", user.ID, user.Firstname, user.Lastname, user.Email, user.Age, user.Created.Format(time.RFC3339)))).
+					WillReturnResult(sqlmock.NewResult(1, 1))
+			},
+			expected: nil,
+		},
+	}
+
+	for _, testCase := range testTable {
+		t.Run(testCase.name, func(t *testing.T) {
+
+			testCase.mockBehaviour(testCase.testUser, testCase.id)
+
+			actual := service.UserRepository.CreateUser(s, testCase.testUser)
+
+			if actual != testCase.expected {
+				t.Errorf("not working. Expect %v, got %v", testCase.expected, actual)
+			}
+		})
+	}
 }
-
-//func TestCreateUserWithMock(t *testing.T) {
-//	db, mock, err := sqlmock.New()
-//	if err != nil {
-//		log.Printf("err: %s", err)
-//	}
-//	defer db.Close()
-//
-//	r := NewUserRepository(db)
-//	log := logrus.New()
-//	s := service.NewUserService(log, r)
-//
-//	type mockBehaviour func(user entity.User, id int)
-//
-//	testTable := []struct {
-//		name          string
-//		mockBehaviour mockBehaviour
-//		testUser      entity.User
-//		id            int
-//		expected      error
-//	}{
-//		{
-//			name: "Test Add One",
-//			testUser: entity.User{
-//				ID:        uuid.MustParse("18e90062-54b0-11ed-86a7-e8d8d1f76e0b"),
-//				Firstname: "Viktor",
-//				Lastname:  "Korneplod",
-//				Email:     "viktor.korneplod.2020@mail.ru",
-//				Age:       100,
-//				Created:   time.Now(),
-//			},
-//			id: 1,
-//			mockBehaviour: func(user entity.User, id int) {
-//				mock.ExpectExec(regexp.QuoteMeta(fmt.Sprintf("INSERT INTO users VALUES('%s','%s','%s','%s',%v,'%v')", user.ID, user.Firstname, user.Lastname, user.Email, user.Age, user.Created.Format(time.RFC3339)))).
-//					WillReturnResult(sqlmock.NewResult(1, 1))
-//			},
-//			expected: nil,
-//		},
-//		{
-//			name: "Test Add Two",
-//			testUser: entity.User{
-//				ID:        uuid.MustParse("18ea73dc-54b0-11ed-86a7-e8d8d1f76e0b"),
-//				Firstname: "Boris",
-//				Lastname:  "Johnson",
-//				Email:     "boris.johnson.2022@mail.ru",
-//				Age:       45,
-//				Created:   time.Now(),
-//			},
-//			id: 2,
-//			mockBehaviour: func(user entity.User, id int) {
-//				mock.ExpectExec(regexp.QuoteMeta(fmt.Sprintf("INSERT INTO users VALUES('%s','%s','%s','%s',%v,'%v')", user.ID, user.Firstname, user.Lastname, user.Email, user.Age, user.Created.Format(time.RFC3339)))).
-//					WillReturnResult(sqlmock.NewResult(1, 1))
-//			},
-//			expected: nil,
-//		},
-//	}
-//
-//	for _, testCase := range testTable {
-//		t.Run(testCase.name, func(t *testing.T) {
-//
-//			testCase.mockBehaviour(testCase.testUser, testCase.id)
-//
-//			actual := service.UserRepository.CreateUser(s, testCase.testUser)
-//
-//			if actual != testCase.expected {
-//				t.Errorf("not working. Expect %v, got %v", testCase.expected, actual)
-//			}
-//		})
-//	}
-//}
 
 func TestUpdateUserWithMock(t *testing.T) {
 	db, mock, err := sqlmock.New()
@@ -114,8 +93,6 @@ func TestUpdateUserWithMock(t *testing.T) {
 	defer db.Close()
 
 	r := NewUserRepository(db)
-	//log := logrus.New()
-	//s := service.NewUserService(log, r)
 
 	type mockBehaviour func(user entity.User, id int)
 
@@ -174,6 +151,83 @@ func TestUpdateUserWithMock(t *testing.T) {
 			}
 		})
 	}
+}
+
+func TestDeleteUserWithMock(t *testing.T) {
+	db, mock, err := sqlmock.New()
+	if err != nil {
+		log.Printf("err: %s", err)
+	}
+	defer db.Close()
+
+	r := NewUserRepository(db)
+	log := logrus.New()
+	s := service.NewUserService(log, r)
+
+	type mockBehaviour func(userID string, id int)
+
+	testTable := []struct {
+		name          string
+		mockBehaviour mockBehaviour
+		userID        string
+		id            int
+		expected      error
+	}{
+		{
+			name:   "Test Delete One",
+			userID: "18e90062-54b0-11ed-86a7-e8d8d1f76e0b",
+			id:     1,
+			mockBehaviour: func(userID string, id int) {
+				mock.ExpectExec(regexp.QuoteMeta(fmt.Sprintf("DELETE FROM users WHERE id='%s'", userID))).
+					WillReturnResult(sqlmock.NewResult(1, 1))
+			},
+			expected: nil,
+		},
+		{
+			name:   "Test Delete Two",
+			userID: "18ea73dc-54b0-11ed-86a7-e8d8d1f76e0b",
+			id:     2,
+			mockBehaviour: func(userID string, id int) {
+				mock.ExpectExec(regexp.QuoteMeta(fmt.Sprintf("DELETE FROM users WHERE id='%s'", userID))).
+					WillReturnResult(sqlmock.NewResult(1, 1))
+			},
+			expected: nil,
+		},
+	}
+
+	for _, testCase := range testTable {
+		t.Run(testCase.name, func(t *testing.T) {
+
+			testCase.mockBehaviour(testCase.userID, testCase.id)
+
+			actual := service.UserRepository.DeleteUser(s, testCase.userID)
+
+			if actual != testCase.expected {
+				t.Errorf("not working. Expect %v, got %v", testCase.expected, actual)
+			}
+		})
+	}
+}
+
+func Connect() *service.UserService {
+	connStr := "user=postgres password=8403 dbname=InnowiseTaskTest sslmode=disable"
+
+	db, err := sql.Open("postgres", connStr)
+
+	if err != nil {
+		log.Fatalf("Couldn't open database + %s", err)
+	}
+
+	err = db.Ping()
+	if err != nil {
+		log.Fatal("Couldn't ping database")
+	}
+
+	log := logrus.New()
+	userRepository := NewUserRepository(db)
+	userService := service.NewUserService(log, userRepository)
+
+	return userService
 }
 
 //func TestCreateUser(t *testing.T) {
