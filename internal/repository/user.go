@@ -11,7 +11,7 @@ var queryUser = map[string]string{
 	"GetUser":     "SELECT * FROM users WHERE id = '%s'",
 	"DeleteUser":  "DELETE FROM users WHERE id='%s'",
 	"UpdateUser":  "UPDATE users SET firstname='%s',lastname='%s',email='%s',age=%v WHERE id='%s'",
-	"GetUserList": "SELECT * FROM users",
+	"GetUserList": "SELECT * FROM \"users\"",
 }
 
 func (r UserRepository) GetUser(uuid string) (*entity.User, error) {

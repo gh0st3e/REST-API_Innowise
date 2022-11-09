@@ -5,6 +5,7 @@ import (
 	"InnowisePreTraineeTask/internal/database"
 	"InnowisePreTraineeTask/internal/repository"
 	"InnowisePreTraineeTask/internal/service"
+
 	"github.com/gorilla/mux"
 	"github.com/sirupsen/logrus"
 	"net/http"
@@ -22,5 +23,6 @@ func main() {
 
 	userServer.Mount(r)
 
+	log.Info("server is listening on 8081")
 	log.Fatal(http.ListenAndServe(":8081", r))
 }
