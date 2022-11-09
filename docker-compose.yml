@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15-alpine
+    restart: always
+    environment:
+      POSTGRES_DB: "InnowiseTask"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "8403"
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+    ports:
+      - '5432:5432'
+    volumes:
+#      - db:/var/lib/postgresql/data
+      - ./db/init.sql.:/docker-entrypoint-initdb.d/create_tables.sql
+  my-app:
+    build:
+      dockerfile: Dockerfile
+      context: .
+      target: runner
+    expose:
+      - 8081
+    depends_on:
+      - db
+    ports:
+      - 8081:8081
+    volumes:
+      - .:/opt/app
+volumes:
+  db:
+    driver: local
