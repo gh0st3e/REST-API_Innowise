@@ -3,22 +3,88 @@ module InnowisePreTraineeTask
 go 1.19
 
 require (
+	github.com/Azure/go-ansiterm v0.0.0-20170929234023-d6e3b3328b78 // indirect
 	github.com/BurntSushi/toml v0.4.1 // indirect
 	github.com/Masterminds/squirrel v1.5.3 // indirect
+	github.com/Microsoft/go-winio v0.4.15-0.20200113171025-3fe6c5262873 // indirect
+	github.com/Microsoft/hcsshim v0.8.7 // indirect
+	github.com/Sirupsen/logrus v1.0.6 // indirect
+	github.com/containerd/containerd v1.3.0 // indirect
+	github.com/containerd/continuity v0.0.0-20200228182428-0f16d7a0959c // indirect
+	github.com/deckarep/golang-set v1.7.1 // indirect
+	github.com/docker/cli v0.0.0-20190711175710-5b38d82aa076 // indirect
+	github.com/docker/distribution v2.7.1+incompatible // indirect
+	github.com/docker/docker v1.4.2-0.20191101170500-ac7306503d23 // indirect
+	github.com/docker/go-connections v0.4.0 // indirect
+	github.com/docker/go-units v0.4.0 // indirect
+	github.com/docker/libcompose v0.4.0 // indirect
+	github.com/fatih/structs v1.1.0 // indirect
+	github.com/flynn/go-shlex v0.0.0-20150515145356-3f9db97f8568 // indirect
+	github.com/fsnotify/fsnotify v1.4.9 // indirect
+	github.com/fsouza/go-dockerclient v1.6.5 // indirect
+	github.com/go-logr/logr v0.2.0 // indirect
+	github.com/gogo/protobuf v1.3.1 // indirect
+	github.com/golang/protobuf v1.4.2 // indirect
+	github.com/google/gofuzz v1.1.0 // indirect
+	github.com/google/shlex v0.0.0-20191202100458-e7afc7fbc510 // indirect
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/gorilla/mux v1.8.0 // indirect
+	github.com/hashicorp/hcl v1.0.0 // indirect
+	github.com/imdario/mergo v0.3.10 // indirect
+	github.com/inconshreveable/mousetrap v1.0.0 // indirect
 	github.com/jmoiron/sqlx v1.3.5 // indirect
+	github.com/joho/godotenv v1.3.0 // indirect
+	github.com/json-iterator/go v1.1.10 // indirect
 	github.com/kisielk/errcheck v1.6.2 // indirect
+	github.com/kubernetes/kompose v1.26.1 // indirect
 	github.com/lann/builder v0.0.0-20180802200727-47ae307949d0 // indirect
 	github.com/lann/ps v0.0.0-20150810152359-62de8c46ede0 // indirect
 	github.com/lib/pq v1.10.7 // indirect
+	github.com/magiconair/properties v1.8.1 // indirect
+	github.com/mattn/go-shellwords v1.0.12 // indirect
+	github.com/mitchellh/mapstructure v1.1.2 // indirect
+	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
+	github.com/modern-go/reflect2 v1.0.1 // indirect
+	github.com/morikuni/aec v1.0.0 // indirect
+	github.com/novln/docker-parser v1.0.0 // indirect
+	github.com/opencontainers/go-digest v1.0.0-rc1 // indirect
+	github.com/opencontainers/image-spec v1.0.1 // indirect
+	github.com/opencontainers/runc v0.1.1 // indirect
+	github.com/openshift/api v0.0.0-20200803131051-87466835fcc0 // indirect
+	github.com/pelletier/go-toml v1.2.0 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/sirupsen/logrus v1.9.0 // indirect
+	github.com/spf13/afero v1.1.2 // indirect
+	github.com/spf13/cast v1.3.1 // indirect
+	github.com/spf13/cobra v1.0.0 // indirect
+	github.com/spf13/jwalterweatherman v1.0.0 // indirect
+	github.com/spf13/pflag v1.0.5 // indirect
+	github.com/spf13/viper v1.7.1 // indirect
+	github.com/subosito/gotenv v1.2.0 // indirect
+	github.com/xeipuuv/gojsonpointer v0.0.0-20180127040702-4e3ac2762d5f // indirect
+	github.com/xeipuuv/gojsonreference v0.0.0-20180127040603-bd5ef7bd5415 // indirect
+	github.com/xeipuuv/gojsonschema v0.0.0-20180618132009-1d523034197f // indirect
 	github.com/zhashkevych/go-sqlxmock v1.5.2-0.20201023121933-f973d0041cfc // indirect
+	golang.org/x/crypto v0.0.0-20210921155107-089bfa567519 // indirect
 	golang.org/x/exp/typeparams v0.0.0-20220218215828-6cf2b201936e // indirect
 	golang.org/x/lint v0.0.0-20210508222113-6edffad5e616 // indirect
-	golang.org/x/mod v0.6.0 // indirect
+	golang.org/x/mod v0.6.0-dev.0.20220419223038-86c51ed26bb4 // indirect
+	golang.org/x/net v0.0.0-20211015210444-4f30a5c0130f // indirect
+	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c // indirect
 	golang.org/x/sys v0.1.0 // indirect
-	golang.org/x/tools v0.2.0 // indirect
+	golang.org/x/term v0.0.0-20201126162022-7de9c90e9dd1 // indirect
+	golang.org/x/text v0.3.7 // indirect
+	golang.org/x/tools v0.1.11 // indirect
+	google.golang.org/genproto v0.0.0-20200526211855-cb27e3aa2013 // indirect
+	google.golang.org/grpc v1.27.1 // indirect
+	google.golang.org/protobuf v1.24.0 // indirect
+	gopkg.in/inf.v0 v0.9.1 // indirect
+	gopkg.in/ini.v1 v1.51.0 // indirect
+	gopkg.in/yaml.v2 v2.3.0 // indirect
+	gopkg.in/yaml.v3 v3.0.0-20200615113413-eeeca48fe776 // indirect
 	honnef.co/go/tools v0.3.3 // indirect
+	k8s.io/api v0.19.0-rc.2 // indirect
+	k8s.io/apimachinery v0.19.0-rc.2 // indirect
+	k8s.io/klog/v2 v2.2.0 // indirect
+	sigs.k8s.io/structured-merge-diff/v3 v3.0.1-0.20200706213357-43c19bbb7fba // indirect
 )

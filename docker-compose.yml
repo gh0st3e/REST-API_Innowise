@@ -12,9 +12,13 @@ services:
     ports:
       - '5432:5432'
     volumes:
+#      - empty initialization
 #      - db:/var/lib/postgresql/data
+#      - for kuber
+#      - /d/Work/InnowisePreTraineeTask/db/init.sql.:/docker-entrypoint-initdb.d/create_tables.sql
       - ./db/init.sql.:/docker-entrypoint-initdb.d/create_tables.sql
-  my-app:
+  app:
+    image: appimage
     build:
       dockerfile: Dockerfile
       context: .
@@ -24,8 +28,10 @@ services:
     depends_on:
       - db
     ports:
-      - 8081:8081
+      - "8081:8081"
     volumes:
+#      for kuber
+#      - /d/work/InnowisePreTraineeTask:/opt/app
       - .:/opt/app
 volumes:
   db:
