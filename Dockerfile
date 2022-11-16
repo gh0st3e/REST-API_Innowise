@@ -11,4 +11,3 @@ COPY --from=builder /src/main.bin /app/
 ENTRYPOINT ./main.bin
 
 CMD ["/app"]
-

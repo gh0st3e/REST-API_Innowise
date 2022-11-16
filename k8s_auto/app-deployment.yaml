@@ -29,7 +29,8 @@ spec:
           imagePullPolicy: IfNotPresent
           name: app
           ports:
-            - containerPort: 8081
+            - name: http
+              containerPort: 8081
           resources: {}
           volumeMounts:
             - mountPath:  /d/work/InnowisePreTraineeTask/opt/app

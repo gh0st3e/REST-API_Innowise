@@ -3,7 +3,6 @@ package repository
 import (
 	"InnowisePreTraineeTask/internal/entity"
 	"InnowisePreTraineeTask/internal/service"
-	"database/sql"
 	"fmt"
 	"github.com/google/uuid"
 	_ "github.com/lib/pq"
@@ -47,7 +46,8 @@ func TestCreateUserWithMock(t *testing.T) {
 			},
 			id: 1,
 			mockBehaviour: func(user entity.User, id int) {
-				mock.ExpectExec(regexp.QuoteMeta(fmt.Sprintf("INSERT INTO users VALUES('%s','%s','%s','%s',%v,'%v')", user.ID, user.Firstname, user.Lastname, user.Email, user.Age, user.Created.Format(time.RFC3339)))).
+
+				mock.ExpectExec(regexp.QuoteMeta(fmt.Sprintf("INSERT INTO \"users\" VALUES('%s','%s','%s','%s',%v,'%v')", user.ID, user.Firstname, user.Lastname, user.Email, user.Age, user.Created.Format(time.RFC3339)))).
 					WillReturnResult(sqlmock.NewResult(1, 1))
 			},
 			expected: nil,
@@ -64,7 +64,8 @@ func TestCreateUserWithMock(t *testing.T) {
 			},
 			id: 2,
 			mockBehaviour: func(user entity.User, id int) {
-				mock.ExpectExec(regexp.QuoteMeta(fmt.Sprintf("INSERT INTO users VALUES('%s','%s','%s','%s',%v,'%v')", user.ID, user.Firstname, user.Lastname, user.Email, user.Age, user.Created.Format(time.RFC3339)))).
+
+				mock.ExpectExec(regexp.QuoteMeta(fmt.Sprintf("INSERT INTO \"users\" VALUES('%s','%s','%s','%s',%v,'%v')", user.ID, user.Firstname, user.Lastname, user.Email, user.Age, user.Created.Format(time.RFC3339)))).
 					WillReturnResult(sqlmock.NewResult(1, 1))
 			},
 			expected: nil,
@@ -115,7 +116,7 @@ func TestUpdateUserWithMock(t *testing.T) {
 			},
 			id: 2,
 			mockBehaviour: func(user entity.User, id int) {
-				mock.ExpectExec(regexp.QuoteMeta(fmt.Sprintf("UPDATE users SET firstname='%s',lastname='%s',email='%s',age=%v WHERE id='%s'", user.Firstname, user.Lastname, user.Email, user.Age, user.ID))).
+				mock.ExpectExec(regexp.QuoteMeta(fmt.Sprintf("UPDATE \"users\" SET firstname='%s',lastname='%s',email='%s',age=%v WHERE id='%s'", user.Firstname, user.Lastname, user.Email, user.Age, user.ID))).
 					WillReturnResult(sqlmock.NewResult(1, 1))
 			},
 			expected: nil,
@@ -132,7 +133,7 @@ func TestUpdateUserWithMock(t *testing.T) {
 			},
 			id: 2,
 			mockBehaviour: func(user entity.User, id int) {
-				mock.ExpectExec(regexp.QuoteMeta(fmt.Sprintf("UPDATE users SET firstname='%s',lastname='%s',email='%s',age=%v WHERE id='%s'", user.Firstname, user.Lastname, user.Email, user.Age, user.ID))).
+				mock.ExpectExec(regexp.QuoteMeta(fmt.Sprintf("UPDATE \"users\" SET firstname='%s',lastname='%s',email='%s',age=%v WHERE id='%s'", user.Firstname, user.Lastname, user.Email, user.Age, user.ID))).
 					WillReturnResult(sqlmock.NewResult(1, 1))
 			},
 			expected: nil,
@@ -178,7 +179,7 @@ func TestDeleteUserWithMock(t *testing.T) {
 			userID: "18e90062-54b0-11ed-86a7-e8d8d1f76e0b",
 			id:     1,
 			mockBehaviour: func(userID string, id int) {
-				mock.ExpectExec(regexp.QuoteMeta(fmt.Sprintf("DELETE FROM users WHERE id='%s'", userID))).
+				mock.ExpectExec(regexp.QuoteMeta(fmt.Sprintf("DELETE FROM \"users\" WHERE id='%s'", userID))).
 					WillReturnResult(sqlmock.NewResult(1, 1))
 			},
 			expected: nil,
@@ -188,7 +189,7 @@ func TestDeleteUserWithMock(t *testing.T) {
 			userID: "18ea73dc-54b0-11ed-86a7-e8d8d1f76e0b",
 			id:     2,
 			mockBehaviour: func(userID string, id int) {
-				mock.ExpectExec(regexp.QuoteMeta(fmt.Sprintf("DELETE FROM users WHERE id='%s'", userID))).
+				mock.ExpectExec(regexp.QuoteMeta(fmt.Sprintf("DELETE FROM \"users\" WHERE id='%s'", userID))).
 					WillReturnResult(sqlmock.NewResult(1, 1))
 			},
 			expected: nil,
@@ -209,26 +210,26 @@ func TestDeleteUserWithMock(t *testing.T) {
 	}
 }
 
-func Connect() *service.UserService {
-	connStr := "user=postgres password=8403 dbname=InnowiseTaskTest sslmode=disable"
-
-	db, err := sql.Open("postgres", connStr)
-
-	if err != nil {
-		log.Fatalf("Couldn't open database + %s", err)
-	}
-
-	err = db.Ping()
-	if err != nil {
-		log.Fatal("Couldn't ping database")
-	}
-
-	log := logrus.New()
-	userRepository := NewUserRepository(db)
-	userService := service.NewUserService(log, userRepository)
-
-	return userService
-}
+//func Connect() *service.UserService {
+//	connStr := "user=postgres password=8403 dbname=InnowiseTaskTest sslmode=disable"
+//
+//	db, err := sql.Open("postgres", connStr)
+//
+//	if err != nil {
+//		log.Fatalf("Couldn't open database + %s", err)
+//	}
+//
+//	err = db.Ping()
+//	if err != nil {
+//		log.Fatal("Couldn't ping database")
+//	}
+//
+//	log := logrus.New()
+//	userRepository := NewUserRepository(db)
+//	userService := service.NewUserService(log, userRepository)
+//
+//	return userService
+//}
 
 //func TestCreateUser(t *testing.T) {
 //

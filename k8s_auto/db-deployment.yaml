@@ -44,6 +44,7 @@ spec:
               name: db-claim0
       restartPolicy: Always
       volumes:
+
         - name: db-claim0
           persistentVolumeClaim:
             claimName: db-claim0

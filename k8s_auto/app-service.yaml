@@ -10,12 +10,10 @@ metadata:
   name: app
 spec:
   ports:
-    - name: "8081"
+    - name: http
       port: 8081
       targetPort: 8081
-    - name: 8081-tcp
-      port: 8081
-      targetPort: 8081
+  type: NodePort
   selector:
     io.kompose.service: app
 status:
