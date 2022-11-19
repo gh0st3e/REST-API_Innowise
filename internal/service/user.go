@@ -23,9 +23,7 @@ func (s UserService) GetUser(uuid string) (*entity.User, error) {
 func (s UserService) CreateUser(user entity.User) error {
 	s.log.Info("service.user.CreateUser started")
 
-	if user.ID == uuid2.Nil {
-		user.ID, _ = uuid2.NewUUID()
-	}
+	user.ID, _ = uuid2.NewUUID()
 	user.Created = time.Now()
 
 	err := checks.Validation(user)

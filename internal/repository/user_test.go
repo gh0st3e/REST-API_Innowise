@@ -22,8 +22,6 @@ func TestCreateUserWithMock(t *testing.T) {
 	defer db.Close()
 
 	r := NewUserRepository(db)
-	log := logrus.New()
-	s := service.NewUserService(log, r)
 
 	type mockBehaviour func(user entity.User, id int)
 
@@ -77,7 +75,7 @@ func TestCreateUserWithMock(t *testing.T) {
 
 			testCase.mockBehaviour(testCase.testUser, testCase.id)
 
-			actual := service.UserRepository.CreateUser(s, testCase.testUser)
+			actual := UserRepository.CreateUser(*r, testCase.testUser)
 
 			if actual != testCase.expected {
 				t.Errorf("not working. Expect %v, got %v", testCase.expected, actual)
@@ -114,7 +112,7 @@ func TestUpdateUserWithMock(t *testing.T) {
 				Age:       100,
 				Created:   time.Now(),
 			},
-			id: 2,
+			id: 1,
 			mockBehaviour: func(user entity.User, id int) {
 				mock.ExpectExec(regexp.QuoteMeta(fmt.Sprintf("UPDATE \"users\" SET firstname='%s',lastname='%s',email='%s',age=%v WHERE id='%s'", user.Firstname, user.Lastname, user.Email, user.Age, user.ID))).
 					WillReturnResult(sqlmock.NewResult(1, 1))
